@@ -18,9 +18,9 @@ background = pygame.image.load("assets/images/background.png").convert()
 title = game_font.render("Torpedo!", True, (0, 0, 0))
 background.blit(title, (SCREEN_WIDTH - (title.get_width()+ 10), 0))
 
-my_battleship = battleship.Battleship(200, WATER_HEIGHT)
-my_destroyer = destroyer.Destroyer(400, WATER_HEIGHT)
-my_cruiser = cruiser.Cruiser(300, hvary)
+my_battleship = battleship.Battleship(100, LOW_HEIGHT)
+my_destroyer = destroyer.Destroyer(600, LOW_HEIGHT)
+my_cruiser = cruiser.Cruiser(1000, LOW_HEIGHT)
 
 while True:
     for event in pygame.event.get():
@@ -33,6 +33,7 @@ while True:
     my_battleship.draw(screen)
     my_destroyer.draw(screen)
     my_cruiser.draw(screen)
+
     my_battleship.update()
     my_destroyer.update()
     my_cruiser.update()
