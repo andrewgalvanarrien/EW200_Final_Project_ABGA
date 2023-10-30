@@ -12,7 +12,7 @@ class Battleship(pygame.sprite.Sprite):
         self.left_image.set_colorkey((0, 0, 0))
         self.image = self.right_image
         self.rect = pygame.rect.Rect(x, y, self.image.get_width(), self.image.get_height())
-        self.moving_left = False
+        self.moving_left = True
         self.moving_right = False
 
     def draw(self, screen):
@@ -20,10 +20,10 @@ class Battleship(pygame.sprite.Sprite):
 
     def update(self):
         if self.moving_left:
-            self.rect.x -= 2
+            self.rect.x -= BSHIP_SPEED
             self.image = self.left_image
         elif self.moving_right:
-            self.rect.x += 2
+            self.rect.x += BSHIP_SPEED
             self.image = self.right_image
         #if self.rect.left < 0:
             #self.rect.left = 0
