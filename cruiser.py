@@ -11,6 +11,7 @@ class Cruiser(pygame.sprite.Sprite):
         self.left_image = pygame.transform.flip(self.right_image, True, False)
         self.left_image.set_colorkey((0, 0, 0))
         self.image = self.right_image
+        self.rect = pygame.rect.Rect.bottomleft
         self.rect = pygame.rect.Rect(x, y, self.image.get_width(), self.image.get_height())
         self.moving_left = True
         self.moving_right = False
@@ -25,3 +26,6 @@ class Cruiser(pygame.sprite.Sprite):
         elif self.moving_right:
             self.rect.x += C_SPEED
             self.image = self.right_image
+
+
+cruisers = pygame.sprite.Group()

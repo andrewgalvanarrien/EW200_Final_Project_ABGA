@@ -11,6 +11,7 @@ class Battleship(pygame.sprite.Sprite):
         self.left_image = pygame.transform.flip(self.right_image, True, False)
         self.left_image.set_colorkey((0, 0, 0))
         self.image = self.right_image
+        self.rect = pygame.rect.Rect.bottomleft
         self.rect = pygame.rect.Rect(x, y, self.image.get_width(), self.image.get_height())
         self.moving_left = True
         self.moving_right = False
@@ -30,3 +31,6 @@ class Battleship(pygame.sprite.Sprite):
         #if self.rect.right > SCREEN_WIDTH:
             #self.rect.right = SCREEN_WIDTH
 
+
+
+battleships = pygame.sprite.Group()

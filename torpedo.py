@@ -18,3 +18,4 @@ class Torpedo(pygame.sprite.Sprite):
         if self.moving:
             self.rect.x += TORPEDO_SPEED*math.cos(self.angle)
             self.rect.y += TORPEDO_SPEED*math.sin(self.angle)
+
