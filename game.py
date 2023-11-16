@@ -34,23 +34,24 @@ for _ in range(NUM_BB):
 
 while True:
     for event in pygame.event.get():
-
-        sunk_ships = pygame.sprite.spritecollide(my_torpedo, battleship.battleships, True)
-        score += len(sunk_ships)
-        #if len(chomped_minnows) > 0:
-            #print(f"Chomped a minnow, your score is {score}!")
-
-        for sunk_ship in sunk_ships:
-            print("I sunk a ship")
-            #sounds.explosion.play()
-
-        scoreboard = game_font.render(f"Score:{score}", True, (0, 0, 0))
-        background.blit(scoreboard, (SCREEN_WIDTH - (title.get_width() + 10), 60))
-
-
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+    sunk_ships = pygame.sprite.spritecollide(my_torpedo, battleship.battleships, True)
+    score += len(sunk_ships)
+    #if len(chomped_minnows) > 0:
+        #print(f"Chomped a minnow, your score is {score}!")
+
+    for sunk_ship in sunk_ships:
+        print("I sunk a ship")
+        #sounds.explosion.play()
+
+    scoreboard = game_font.render(f"Score:{score}", True, (0, 0, 0))
+    background.blit(scoreboard, (SCREEN_WIDTH - (title.get_width() + 10), 60))
+
+
+
 
     screen.blit(background, (0,0))
     my_torpedo.update()
