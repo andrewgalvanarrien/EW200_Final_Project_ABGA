@@ -35,3 +35,4 @@ class Battleship(pygame.sprite.Sprite):
             #self.rect.right = SCREEN_WIDTH
 
 battleships = pygame.sprite.Group()
+
