@@ -43,11 +43,15 @@ while True:
         if angle <= RAB:
             angle = RAB
 
-        for fired_torpedo in torpedo.torpedoes:
-            if torpedo.rect.y <= WATER_HEIGHT:
-                torpedo.torpedoes.remove(fired_torpedo)
 
-    sunk_ships = pygame.sprite.spritecollide(my_torpedo, battleship.battleships, True)
+        #BLOCK THIS OUT
+        #for fired_torpedo in torpedo.torpedoes:
+            #if torpedo.rect.y <= WATER_HEIGHT:
+                #torpedo.torpedoes.remove(fired_torpedo)
+        #STOP HERE
+
+
+    sunk_ships = pygame.sprite.groupcollide(torpedo.torpedoes, battleship.battleships, True, True)
     score += len(sunk_ships)
     #if len(chomped_minnows) > 0:
         #print(f"Chomped a minnow, your score is {score}!")
