@@ -1,7 +1,6 @@
 import pygame
 from settings import *
 
-
 class Battleship(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
@@ -35,4 +34,3 @@ class Battleship(pygame.sprite.Sprite):
             #self.rect.right = SCREEN_WIDTH
 
 battleships = pygame.sprite.Group()
-

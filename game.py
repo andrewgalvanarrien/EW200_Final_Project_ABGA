@@ -1,11 +1,8 @@
 import pygame
-
-import destroyer
 import torpedo
 from settings import *
 import sys
 import battleship
-import sub
 import random
 game_clock = 0
 angle = 1.57     # I am in Radians
@@ -22,10 +19,6 @@ title = game_font.render("Torpedo!", True, (0, 0, 0))
 background.blit(title, (SCREEN_WIDTH - (title.get_width() + 10), 0))
 
 
-
-
-my_torpedo = torpedo.Torpedo(angle)
-
 for _ in range(NUM_BB):
     hvary = random.randint(WATER_HEIGHT, LOW_HEIGHT)
     battleship.battleships.add(battleship.Battleship(random.randint(0, SCREEN_WIDTH), hvary))
@@ -37,8 +30,11 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_s:
+                torpedo.torpedoes.add(torpedo.Torpedo(angle))
 
-    sunk_ships = pygame.sprite.spritecollide(my_torpedo, battleship.battleships, True)
+    sunk_ships = pygame.sprite.spritecollide(torpedo.torpedoes, battleship.battleships, True)
     score += len(sunk_ships)
     #if len(chomped_minnows) > 0:
         #print(f"Chomped a minnow, your score is {score}!")
@@ -50,21 +46,11 @@ while True:
     scoreboard = game_font.render(f"Score:{score}", True, (0, 0, 0))
     background.blit(scoreboard, (SCREEN_WIDTH - (title.get_width() + 10), 60))
 
-
-
-
-    screen.blit(background, (0,0))
-    my_torpedo.update()
+    screen.blit(background, (0, 0))
+    torpedo.torpedoes.update()
     battleship.battleships.update()
-    my_torpedo.draw(screen)
+    torpedo.torpedoes.draw(screen)
     battleship.battleships.draw(screen)
     pygame.display.flip()
     clock.tick(60)
-    game_clock+= 1/60
-
-
-
-
-# for a ship moving left
-# if self.rect.right < 0:
-    #append to list of missed_ships
+    game_clock += 1/60
