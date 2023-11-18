@@ -9,6 +9,7 @@ C_SPEED = 2
 D_SPEED = 3
 TORPEDO_SPEED = 4
 NUM_BB = 20
-hvary = random.randint(WATER_HEIGHT, LOW_HEIGHT)
 LAB = 3.14
 RAB = 0
+score = 0
+
