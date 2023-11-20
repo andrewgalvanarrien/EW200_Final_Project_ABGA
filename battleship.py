@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 class Battleship(pygame.sprite.Sprite):
 
@@ -10,13 +11,11 @@ class Battleship(pygame.sprite.Sprite):
         self.left_image = pygame.transform.flip(self.right_image, True, False)
         self.left_image.set_colorkey((0, 0, 0))
         self.image = self.right_image
-
         self.rect = pygame.rect.Rect.bottomleft
-
         self.rect = pygame.rect.Rect(x, y, self.image.get_width(), self.image.get_height())
-
-        self.moving_left = True
-        self.moving_right = False
+        #self.rect = pygame.transform.scale_by(screen, .5)
+        self.moving_left = False
+        self.moving_right = True
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
