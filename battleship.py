@@ -13,7 +13,7 @@ class Battleship(pygame.sprite.Sprite):
         self.image = self.right_image
         self.rect = pygame.rect.Rect.bottomleft
         self.rect = pygame.rect.Rect(x, y, self.image.get_width(), self.image.get_height())
-        #self.rect = pygame.transform.scale_by(screen, .5)
+        #self.rect = pygame.transform.scale_by(self.image, .5)
         self.moving_left = False
         self.moving_right = True
 
