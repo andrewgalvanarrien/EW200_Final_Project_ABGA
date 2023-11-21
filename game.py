@@ -4,12 +4,11 @@ from settings import *
 import sys
 import battleship
 import random
+pygame.init()
 
 # INITIAL VARIABLES
-game_clock = 100
 angle = 1.57  # in Radians
 high_score = 0
-pygame.init()
 clock = pygame.time.Clock()
 
 # FONT CHOICES:
@@ -44,6 +43,7 @@ def decrease_angle(angle):
     return angle
 
 
+# The Game
 while True:
     screen.blit(background, (0, 0))
     screen.blit(big_title, (SCREEN_WIDTH/2 - (big_title.get_width()/2), SCREEN_HEIGHT/2 - 45))

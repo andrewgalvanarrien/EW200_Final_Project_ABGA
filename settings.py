@@ -12,3 +12,4 @@ LAB = 3.1415
 RAB = 0
 score = 0
 RTL = 10
+angle = 1.57
