@@ -8,6 +8,7 @@ class Torpedo(pygame.sprite.Sprite):
     def __init__(self, angle):
         super().__init__()
         self.image = pygame.image.load("assets/images/torpedo.png").convert()
+        self.image.set_colorkey((0, 0, 0))
         self.rect = pygame.rect.Rect(0, 0, self.image.get_width(), self.image.get_height())
         self.rect.midbottom = (SCREEN_WIDTH/2, SCREEN_HEIGHT)
         self.moving = True

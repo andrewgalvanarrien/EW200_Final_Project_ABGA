@@ -2,6 +2,7 @@ import pygame
 from settings import *
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+
 class Battleship(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
@@ -13,7 +14,7 @@ class Battleship(pygame.sprite.Sprite):
         self.image = self.right_image
         self.rect = pygame.rect.Rect.bottomleft
         self.rect = pygame.rect.Rect(x, y, self.image.get_width(), self.image.get_height())
-        #self.rect = pygame.transform.scale_by(self.image, .5)
+        # self.rect = pygame.transform.scale_by(self.image, .5)
         self.moving_left = False
         self.moving_right = True
 
@@ -27,9 +28,6 @@ class Battleship(pygame.sprite.Sprite):
         elif self.moving_right:
             self.rect.x += BSHIP_SPEED
             self.image = self.right_image
-        #if self.rect.left < 0:
-            #self.rect.left = 0
-        #if self.rect.right > SCREEN_WIDTH:
-            #self.rect.right = SCREEN_WIDTH
+
 
 battleships = pygame.sprite.Group()
