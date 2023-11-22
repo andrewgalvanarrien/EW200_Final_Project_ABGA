@@ -91,13 +91,14 @@ while True:
                                 if angle <= RAB:
                                     angle = RAB
 
-                            for fired_torpedo in torpedo.torpedoes:
-                                if fired_torpedo.rect.y <= WATER_HEIGHT:
-                                    torpedo.torpedoes.remove(fired_torpedo)
+                        for fired_torpedo in list(torpedo.torpedoes):
+                            if fired_torpedo.rect.top <= WATER_HEIGHT:  # Refactor this
+                                print("hit the horizon")
+                                torpedo.torpedoes.remove(fired_torpedo)
 
-                            for missed_ship in battleship.battleships:
-                                if missed_ship.rect.x <= 0-220 or missed_ship.rect.x >= SCREEN_WIDTH:
-                                    battleship.battleships.remove(missed_ship)
+                        for missed_ship in battleship.battleships:
+                            if missed_ship.rect.x <= 0-220 or missed_ship.rect.x >= SCREEN_WIDTH:
+                                battleship.battleships.remove(missed_ship)
 
                         sunk_ships = pygame.sprite.groupcollide(torpedo.torpedoes, battleship.battleships, True, True)
                         score += len(sunk_ships)

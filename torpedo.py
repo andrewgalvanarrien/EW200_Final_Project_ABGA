@@ -16,14 +16,15 @@ class Torpedo(pygame.sprite.Sprite):
         self.rotating_left = False
         self.rotating_right = False
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
 
     def update(self):
         if self.moving:
             self.rect.x += TORPEDO_SPEED * math.cos(self.angle)
             self.rect.y += - (TORPEDO_SPEED * math.sin(self.angle))
-
+            new_position = self.rect.center
+            self.image = pygame.transform.scale_by(self.image, .7)
+            #self.rect = self.image.get_rect()
+            #self.rect.center = new_position
     def targeting(self):
         if self.rotating_left == True:
             self.angle += 0.1
