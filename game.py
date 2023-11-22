@@ -4,6 +4,7 @@ from settings import *
 import sys
 import battleship
 import random
+import explosion
 pygame.init()
 
 # INITIAL VARIABLES
@@ -18,11 +19,13 @@ game_font_small = pygame.font.Font("assets/fonts/Wargate-Normal.ttf", 35)
 game_font_medbig = pygame.font.Font("assets/fonts/Wargate-Normal.ttf", 130)
 game_font_med = pygame.font.Font("assets/fonts/Wargate-Normal.ttf", 55)
 
-# SCREEN BTS
+# SCREEN & SOUND BTS
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Torpedo!")
 background = pygame.image.load("assets/images/background.png").convert()
 data_background = pygame.image.load("assets/images/data_background.png").convert()
+explosion_sound = pygame.mixer.Sound("assets/sounds/explosion.wav")
+splash_sound = pygame.mixer.Sound("assets/sounds/watersplash2.flac")
 
 # RENDERS
 title = game_font.render("Torpedo!", True, (0, 0, 0))
@@ -31,6 +34,7 @@ big_title = game_font_big.render("Torpedo!", True, (0, 0, 0))
 GO = game_font_medbig.render("GAME OVER!", True, (0, 0, 0))
 HIGH_SCORE = game_font_med.render(f"HIGH SCORE: {high_score}", True, (0, 0, 0))
 GO_BACK = game_font_med.render("Press 'ENTER' to Return to Start", True, (0, 0, 0))
+HIT = game_font_small.render("Hit +1", True, (0,0,0))
 
 
 def increase_angle(angle):
@@ -41,6 +45,11 @@ def increase_angle(angle):
 def decrease_angle(angle):
     angle -= .1
     return angle
+
+
+def explosion1(x, y):
+    the_explosion = explosion.Explosion( x, y )
+    the_explosion.draw(screen, x, y)
 
 
 # The Game
@@ -55,13 +64,13 @@ while True:
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                game_clock = RTL
+                splash_sound.play()
+                game_clock = RTL  # sets round limit timer; immediately begins countdown
                 start_game = True
                 for _ in range(NUM_BB):
                     HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
                     battleship.battleships.add(battleship.Battleship(random.randint(0, SCREEN_WIDTH), HEIGHT_VARY))
                 # STARTS GAME
-                # if vs. while
                 while start_game:
                     if game_clock > 0:
                         rotating_left = False
@@ -100,8 +109,14 @@ while True:
                         screen.blit(title, (SCREEN_WIDTH - (title.get_width() + 10), 0))
 
                         for sunk_ship in sunk_ships:
+                            HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
                             print("I sunk a ship")
-                            # sounds.explosion.play()
+                            explosion_sound.play()
+                            #explosion1(sunk_ship.rect.x, sunk_ship.rect.y)
+                            screen.blit(HIT, (sunk_ship.rect.x, sunk_ship.rect.y - 100))
+                            #(sunk_ship.rect.x, sunk_ship.rect.y)
+                            #(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+                            battleship.battleships.add(battleship.Battleship(0, HEIGHT_VARY))
 
                         if rotating_left:
                             angle += 0.1
@@ -115,6 +130,7 @@ while True:
                         clock.tick(60)
                         game_clock -= 1/60
                     else:
+                        # Game Over Screen
                         for event in pygame.event.get():
                             if event.type == pygame.QUIT:
                                 pygame.quit()
