@@ -1,10 +1,12 @@
 import pygame
+import friendly
 import torpedo
 from settings import *
 import sys
 import battleship
 import random
 import explosion
+import destroy
 pygame.init()
 
 # INITIAL VARIABLES
@@ -34,7 +36,7 @@ big_title = game_font_big.render("Torpedo!", True, (0, 0, 0))
 GO = game_font_medbig.render("GAME OVER!", True, (0, 0, 0))
 HIGH_SCORE = game_font_med.render(f"HIGH SCORE: {high_score}", True, (0, 0, 0))
 GO_BACK = game_font_med.render("Press 'ENTER' to Return to Start", True, (0, 0, 0))
-HIT = game_font_small.render("Hit +1", True, (0,0,0))
+HIT = game_font_small.render("Hit +1", True, (0, 0, 0))
 
 
 def increase_angle(angle):
@@ -48,11 +50,11 @@ def decrease_angle(angle):
 
 
 def explosion1(x, y):
-    the_explosion = explosion.Explosion( x, y )
+    the_explosion = explosion.Explosion(x, y)
     the_explosion.draw(screen, x, y)
 
 
-# The Game
+# THE GAME
 while True:
     screen.blit(background, (0, 0))
     screen.blit(big_title, (SCREEN_WIDTH/2 - (big_title.get_width()/2), SCREEN_HEIGHT/2 - 45))
@@ -70,11 +72,16 @@ while True:
                 for _ in range(NUM_BB):
                     HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
                     battleship.battleships.add(battleship.Battleship(random.randint(0, SCREEN_WIDTH), HEIGHT_VARY))
+                for _ in range(NUM_FR):
+                    HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
+                    friendly.friendlies.add(friendly.Friendly(random.randint(0, SCREEN_WIDTH), HEIGHT_VARY))
+
                 # STARTS GAME
                 while start_game:
                     if game_clock > 0:
                         rotating_left = False
                         rotating_right = False
+                        # Listening for keyboard
                         for event in pygame.event.get():
                             if event.type == pygame.QUIT:
                                 pygame.quit()
@@ -91,17 +98,54 @@ while True:
                                 if angle <= RAB:
                                     angle = RAB
 
+                        # Removal of Sprites via bounds:
                         for fired_torpedo in list(torpedo.torpedoes):
-                            if fired_torpedo.rect.top <= WATER_HEIGHT:  # Refactor this
-                                print("hit the horizon")
+                            if fired_torpedo.rect.top <= T_WATER_HEIGHT or fired_torpedo.rect.x <= -84 or fired_torpedo.rect.x >= SCREEN_WIDTH:
                                 torpedo.torpedoes.remove(fired_torpedo)
 
-                        for missed_ship in battleship.battleships:
-                            if missed_ship.rect.x <= 0-220 or missed_ship.rect.x >= SCREEN_WIDTH:
-                                battleship.battleships.remove(missed_ship)
+                        for missed_bship in battleship.battleships:
+                            if missed_bship.rect.x <= -239 or missed_bship.rect.x >= SCREEN_WIDTH:
+                                HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
+                                battleship.battleships.remove(missed_bship)
+                                battleship.battleships.add(battleship.Battleship(-238 + ((random.randint(0, 1)) * (SCREEN_WIDTH + 238)), HEIGHT_VARY))
 
-                        sunk_ships = pygame.sprite.groupcollide(torpedo.torpedoes, battleship.battleships, True, True)
-                        score += len(sunk_ships)
+                        for missed_fship in friendly.friendlies:
+                            if missed_fship.rect.x <= -246 or missed_fship.rect.x >= SCREEN_WIDTH:
+                                HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
+                                friendly.friendlies.remove(missed_fship)
+                                friendly.friendlies.add(friendly.Friendly(-245 + ((random.randint(0, 1)) * (SCREEN_WIDTH + 245)), HEIGHT_VARY))
+
+                        # Removal of Sprites via collision:
+                        sunk_bships = pygame.sprite.groupcollide(torpedo.torpedoes, battleship.battleships, True,True)
+                        for sunk_ship in sunk_bships:
+                            HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
+                            explosion_sound.play()
+                            #destroy.destroys.add(sunk_ship.rect.x, sunk_ship.rect.y)
+                            #for hit in list(destroy.destroys):
+                                #if hit.health == 0:
+                                    #destroy.destroys.remove(hit)
+                            #explosion1(sunk_ship.rect.x, sunk_ship.rect.y)
+                            #screen.blit(HIT, (sunk_ship.rect.x, sunk_ship.rect.y - 100))
+                            #(sunk_ship.rect.x, sunk_ship.rect.y)
+                            #(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)s
+                            battleship.battleships.add(battleship.Battleship(-238 + ((random.randint(0, 1)) * (SCREEN_WIDTH + 238)), HEIGHT_VARY))
+
+                        sunk_fships = pygame.sprite.groupcollide(torpedo.torpedoes, friendly.friendlies, True, True)
+                        for sunk_ship in sunk_fships:
+                            HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
+                            explosion_sound.play()
+                            friendly.friendlies.add(friendly.Friendly(-245 + ((random.randint(0, 1)) * (SCREEN_WIDTH + 245)), HEIGHT_VARY))
+
+                        if rotating_left:
+                            angle += 0.1
+                        elif rotating_right:
+                            angle -= 0.1
+
+                        # Score keeping variables:
+                        score += len(sunk_bships)
+                        score -= len(sunk_fships)
+
+                        # Score board application:
                         screen.blit(background, (0, 0))
                         scoreboard = game_font.render(f"Score: {score}", True, (0, 0, 0))
                         time = game_font.render(f"Time Left: {game_clock}", True, (0, 0, 0))
@@ -109,29 +153,21 @@ while True:
                         screen.blit(time, (SCREEN_WIDTH - 540, 125))
                         screen.blit(title, (SCREEN_WIDTH - (title.get_width() + 10), 0))
 
-                        for sunk_ship in sunk_ships:
-                            HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
-                            print("I sunk a ship")
-                            explosion_sound.play()
-                            #explosion1(sunk_ship.rect.x, sunk_ship.rect.y)
-                            screen.blit(HIT, (sunk_ship.rect.x, sunk_ship.rect.y - 100))
-                            #(sunk_ship.rect.x, sunk_ship.rect.y)
-                            #(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
-                            battleship.battleships.add(battleship.Battleship(0, HEIGHT_VARY))
-
-                        if rotating_left:
-                            angle += 0.1
-                        elif rotating_right:
-                            angle -= 0.1
+                        # All class function calls + timekeeping
                         torpedo.torpedoes.update()
+                        destroy.destroys.update()
+                        friendly.friendlies.update()
                         battleship.battleships.update()
                         torpedo.torpedoes.draw(screen)
+                        destroy.destroys.draw(screen)
                         battleship.battleships.draw(screen)
+                        friendly.friendlies.draw(screen)
                         pygame.display.flip()
                         clock.tick(60)
                         game_clock -= 1/60
+
                     else:
-                        # Game Over Screen
+                        # GAME OVER SCREEN
                         for event in pygame.event.get():
                             if event.type == pygame.QUIT:
                                 pygame.quit()

@@ -22,7 +22,7 @@ class Torpedo(pygame.sprite.Sprite):
             self.rect.x += TORPEDO_SPEED * math.cos(self.angle)
             self.rect.y += - (TORPEDO_SPEED * math.sin(self.angle))
             new_position = self.rect.center
-            self.image = pygame.transform.scale_by(self.image, .7)
+            #self.image = pygame.transform.scale_by(self.image, .999)
             #self.rect = self.image.get_rect()
             #self.rect.center = new_position
     def targeting(self):
@@ -30,7 +30,6 @@ class Torpedo(pygame.sprite.Sprite):
             self.angle += 0.1
         if self.rotating_right == True:
             self.angle += 0.1
-
 
 
 torpedoes = pygame.sprite.Group()

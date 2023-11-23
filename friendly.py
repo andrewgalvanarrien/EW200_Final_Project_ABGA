@@ -4,11 +4,11 @@ import random
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 
-class Battleship(pygame.sprite.Sprite):
+class Friendly(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
-        self.right_image = pygame.image.load("assets/images/battleship1.png").convert()
+        self.right_image = pygame.image.load("assets/images/friendly.png").convert()
         self.right_image.set_colorkey((0, 0, 0))
         self.right_image = pygame.transform.scale_by(self.right_image, y/650)
         self.left_image = pygame.transform.flip(self.right_image, True, False)
@@ -24,11 +24,11 @@ class Battleship(pygame.sprite.Sprite):
 
     def update(self):
         if self.moving_left:
-            self.rect.x -= BSHIP_SPEED
+            self.rect.x -= FRIENDLY_SPEED
             self.image = self.left_image
         else:
-            self.rect.x += BSHIP_SPEED
+            self.rect.x += FRIENDLY_SPEED
             self.image = self.right_image
 
 
-battleships = pygame.sprite.Group()
+friendlies = pygame.sprite.Group()
