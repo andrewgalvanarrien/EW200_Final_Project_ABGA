@@ -79,6 +79,8 @@ while True:
                                 if event.type == pygame.QUIT:
                                     pygame.quit()
                                     sys.exit()
+                                #elif event.type == pygame.MOUSEBUTTONDOWN:
+                                    #torpedo.torpedoes.add(torpedo.Torpedo(angle))
                                 elif event.type == pygame.KEYDOWN:
                                     if event.key == pygame.K_s:
                                         torpedo.torpedoes.add(torpedo.Torpedo(angle))
