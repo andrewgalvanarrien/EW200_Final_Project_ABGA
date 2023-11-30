@@ -5,11 +5,12 @@ from settings import *
 import sys
 import battleship
 import random
+import json
 pygame.init()
 
 # INITIAL VARIABLES
 angle = 1.57  # in Radians
-high_score = 0
+high_score = 'highscore.json'
 clock = pygame.time.Clock()
 
 # FONT CHOICES:
@@ -33,9 +34,13 @@ title = game_font.render("Torpedo!", True, (0, 0, 0))
 begin = game_font_small.render("Press 'ENTER' to Start", True, (0, 0, 0))
 big_title = game_font_big.render("Torpedo!", True, (0, 0, 0))
 GO = game_font_medbig.render("GAME OVER!", True, (0, 0, 0))
-HIGH_SCORE = game_font_med.render(f"HIGH SCORE: {high_score}", True, (0, 0, 0))
 GO_BACK = game_font_med.render("Press 'ENTER' to Return to Start", True, (0, 0, 0))
 HIT = game_font_small.render("Hit +1", True, (0, 0, 0))
+
+with open(high_score) as file_object:
+    HS = json.load(file_object)
+
+HIGH_SCORE = game_font_med.render(f"HIGH SCORE: {HS}", True, (0, 0, 0))
 
 
 while True:
@@ -116,6 +121,7 @@ while True:
                                 explosion_sound.play()
                                 friendly.friendlies.add(friendly.Friendly(-245 + ((random.randint(0, 1)) * (SCREEN_WIDTH + 245)), HEIGHT_VARY))
 
+                            # Controls the torpedo angle
                             if rotating_left:
                                 angle += 0.1
                             elif rotating_right:
@@ -129,7 +135,7 @@ while True:
                             screen.blit(background, (0, 0))
                             scoreboard = game_font.render(f"Score: {score}", True, (0, 0, 0))
                             time = game_font.render(f"Time Left: {game_clock}", True, (0, 0, 0))
-                            screen.blit(scoreboard, (SCREEN_WIDTH - (title.get_width() + 10), 60))
+                            screen.blit(scoreboard, (SCREEN_WIDTH - 400, 60))
                             screen.blit(time, (SCREEN_WIDTH - 540, 125))
                             screen.blit(title, (SCREEN_WIDTH - (title.get_width() + 10), 0))
 
@@ -147,6 +153,10 @@ while True:
                         else:
                             alive = False
                             start_game = False
+                            if score > HS:   # Rewrites high score if new high score is achieved
+                                HS = score
+                                with open(high_score, 'w') as file_object:
+                                    json.dump(score, file_object)
 
     waiting = True
     while waiting:
@@ -157,10 +167,19 @@ while True:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
+                    score = 0
+                    for bship in battleship.battleships:
+                        battleship.battleships.remove(bship)
+                    for fship in friendly.friendlies:
+                        friendly.friendlies.remove(fship)
+                    #for torpedo in list(torpedo.torpedoes):
+                        #torpedo.torpedoes.remove(torpedo)
                     waiting = False
+
         screen.blit(GO, (SCREEN_WIDTH / 2 - (GO.get_width() / 2), SCREEN_HEIGHT / 2 - 45))
         SCORE = game_font_med.render(f"SCORE: {score}", True, (0, 0, 0))
         screen.blit(SCORE, (SCREEN_WIDTH / 2 - (SCORE.get_width() / 2), SCREEN_HEIGHT / 2 + GO.get_height() / 2))
+        HIGH_SCORE = game_font_med.render(f"HIGH SCORE: {HS}", True, (0, 0, 0))
         screen.blit(HIGH_SCORE, (SCREEN_WIDTH / 2 - (HIGH_SCORE.get_width() / 2), SCREEN_HEIGHT / 2 + GO.get_height() / 2 + SCORE.get_height()))
         screen.blit(GO_BACK, (SCREEN_WIDTH / 2 - (GO_BACK.get_width() / 2), SCREEN_HEIGHT / 2 + GO.get_height() / 2 + SCORE.get_height() + HIGH_SCORE.get_height()))
         pygame.display.flip()
