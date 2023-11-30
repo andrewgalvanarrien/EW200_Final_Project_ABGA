@@ -8,7 +8,7 @@ class Friendly(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         super().__init__()
-        self.right_image = pygame.image.load("assets/images/friendly.png").convert()
+        self.right_image = pygame.image.load("assets/images/friendly1.png").convert()
         self.right_image.set_colorkey((0, 0, 0))
         self.right_image = pygame.transform.scale_by(self.right_image, y/650)
         self.left_image = pygame.transform.flip(self.right_image, True, False)
