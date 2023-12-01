@@ -17,7 +17,6 @@ class Battleship(pygame.sprite.Sprite):
         self.rect = pygame.rect.Rect.bottomleft
         self.rect = pygame.rect.Rect(x, y, self.image.get_width(), self.image.get_height())
         self.moving_left = random.random() > 0.5
-        # if moving left
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
