@@ -173,8 +173,8 @@ while True:
                         battleship.battleships.remove(bship)
                     for fship in friendly.friendlies:
                         friendly.friendlies.remove(fship)
-                    #for torpedo in list(torpedo.torpedoes):
-                        #torpedo.torpedoes.remove(torpedo)
+                    for my_torpedo in list(torpedo.torpedoes):
+                        torpedo.torpedoes.remove(my_torpedo)
                     waiting = False
 
         screen.blit(GO, (SCREEN_WIDTH / 2 - (GO.get_width() / 2), SCREEN_HEIGHT / 2 - 45))
