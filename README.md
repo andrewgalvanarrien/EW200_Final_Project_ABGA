@@ -20,5 +20,5 @@ Muzak (2)
 Over Achiever (4)
 
 Special Thanks to:
-*MIDN Schwapach*: Helped me render my scoreboard with live updates.
-*MIDN Goff* : Helped me reorganize my while loop to generate text and ensure it stays on the screen.
+*MIDN Schwapach*: MIDN Schwapach helped me render my scoreboard with live updates.
+*MIDN Goff* : MIDN Goff helped me reorganize my while loop to generate text and ensure it stays on the screen. He also helped me fix my sound FX and background music so that they didn't play over eachother.
