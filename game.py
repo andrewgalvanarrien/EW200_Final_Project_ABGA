@@ -24,10 +24,11 @@ game_font_med = pygame.font.Font("assets/fonts/Wargate-Normal.ttf", 55)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Torpedo!")
 background = pygame.image.load("assets/images/background.png").convert()
-data_background = pygame.image.load("assets/images/data_background.png").convert()
+pygame.mixer.set_num_channels(5)
 explosion_sound = pygame.mixer.Sound("assets/sounds/explosion.wav")
 splash_sound = pygame.mixer.Sound("assets/sounds/watersplash2.flac")
 background_music = pygame.mixer.Sound("assets/sounds/background_music.mp3")
+background_music.set_volume(.1)
 
 # RENDERS
 title = game_font.render("Torpedo!", True, (0, 0, 0))
@@ -56,7 +57,7 @@ while True:
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                splash_sound.play()
+                pygame.mixer.Channel(0).play(splash_sound)
                 game_clock = RTL  # sets round limit timer; immediately begins countdown
                 start_game = True
                 for _ in range(NUM_BB):
@@ -70,6 +71,7 @@ while True:
     while start_game:
         if game_clock > 0:
             background_music.play()
+            background_music.set_volume(.1)
             rotating_left = False
             rotating_right = False
             # Listening for keyboard and mouse
@@ -110,13 +112,13 @@ while True:
             sunk_bships = pygame.sprite.groupcollide(torpedo.torpedoes, battleship.battleships, True, True)
             for sunk_ship in sunk_bships:
                 HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
-                explosion_sound.play()
+                pygame.mixer.Channel(1).play(explosion_sound)
                 battleship.battleships.add(battleship.Battleship(-238 + ((random.randint(0, 1)) * (SCREEN_WIDTH + 238)), HEIGHT_VARY))
 
             sunk_fships = pygame.sprite.groupcollide(torpedo.torpedoes, friendly.friendlies, True, True)
             for sunk_ship in sunk_fships:
                 HEIGHT_VARY = random.randint(WATER_HEIGHT, LOW_HEIGHT)
-                explosion_sound.play()
+                pygame.mixer.Channel(1).play(explosion_sound)
                 friendly.friendlies.add(friendly.Friendly(-245 + ((random.randint(0, 1)) * (SCREEN_WIDTH + 245)), HEIGHT_VARY))
 
             # Controls the torpedo angle
@@ -165,7 +167,7 @@ while True:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    splash_sound.play()
+                    pygame.mixer.Channel(0).play(splash_sound)
                     score = 0
                     for bship in battleship.battleships:
                         battleship.battleships.remove(bship)
