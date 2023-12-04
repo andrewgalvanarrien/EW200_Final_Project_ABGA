@@ -20,5 +20,5 @@ Muzak (2)
 Over Achiever (4)
 
 Special Thanks to:
-*MIDN Schwapach* :Helped me render my scoreboard with live updates.
+*MIDN Schwapach*: Helped me render my scoreboard with live updates.
 *MIDN Goff* : Helped me reorganize my while loop to generate text and ensure it stays on the screen.
