@@ -18,6 +18,7 @@ Textual (2)
 Tick Tock (2)
 Muzak (2)
 Over Achiever (4)
+Helping Hand (1; MIDN Wooden)
 
 Special Thanks to:
 *MIDN Schwapach*: MIDN Schwapach helped me render my scoreboard with live updates.
